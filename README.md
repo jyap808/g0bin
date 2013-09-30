@@ -3,7 +3,7 @@ g0bin
 
 g0bin is a client side encrypted pastebin.  The server has zero knowledge of pasted data.  Data is encrypted/decrypted in the browser using 256 bits AES.
 
-g0bin is a Go implementation of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).
+g0bin is a Go implementation of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).  [These diagrams](http://sebsauvage.net/wiki/doku.php?id=php:zerobin#how_does_it_work) best describe how the encryption and decryption process works.
 
 This project was created mostly as a Go learning exercise through converting a project I use often.  It also serves as a great sample project in Go since it only uses the standard library.
 
