@@ -1,0 +1,52 @@
+{{define "content"}}
+{{if .BurnAfterReading}}
+    {{if .KeepAlive}}
+<p class="alert alert-info">
+    <a class="close" data-dismiss="alert" href="#">×</a>
+    <span class="message">
+        This paste will be deleted the next time it is read.
+    </span>
+</p>
+    {{else}}
+<p class="alert">
+    <a class="close" data-dismiss="alert" href="#">×</a>
+    <strong class="title">Warning!</strong>
+    <span class="message">
+        This paste has self-destructed. If you close this window,
+        there is no way to recover it.
+    </span>
+</p>
+    {{end}}
+{{end}}
+
+
+<div class="well paste-form">
+<form action="/" method="get" accept-charset="utf-8">
+<p class="lnk-option">
+  <a id="clip-button" href="#">Copy To Clipboard</a> |
+
+  <span class="paste-option btn-group top">
+      <button class="btn btn-clone"><i class="icon-camera"></i>&nbsp;Clone</button>
+      <button class="btn">New Paste</button>
+  </span>
+</p>
+
+<div class="progress progress-striped active">
+  <div class="bar"></div>
+</div>
+
+{{if .HumanizedExpiration}}
+  <p id="expiration-tag">Expires {{ .HumanizedExpiration }}</p>
+{{end}}
+
+<p>
+  <pre id="paste-content" class="prettyprint">
+    <code>
+      {{printf "%s" .Paste.Content}}
+    </code>
+  </pre>
+</p>
+
+</form>
+</div>
+{{end}}
