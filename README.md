@@ -1,9 +1,18 @@
 g0bin
 =====
 
-g0bin is a client side encrypted pastebin that can run without a database.
+g0bin is a client side encrypted pastebin that can run without a database.  The server has zero knowledge of pasted data.  Data is encrypted/decrypted in the browser using 256 bits AES.
 
-g0bin is a Go implementation of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project.
+g0bin is a Go implementation of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).
+
+This project was created mostly as a learning exercise but also serves as a great sample project in Go since it only uses the standard library.
+
+Here are some elements that are have been implemented.
+
+ * [Nested HTML Templates](http://stackoverflow.com/questions/9573644/go-appengine-how-to-structure-templates-for-application/9587616#9587616)
+ * [Using Anonymous Structs to pass data to HTML Templates](http://julianyap.com/2013/09/23/using-anonymous-structs-to-pass-data-to-templates-in-golang.html)
+ * [Hot configuration reload from a JSON configuration file](http://openmymind.net/Golang-Hot-Configuration-Reload/)
+ * [HTTP server logging](https://groups.google.com/forum/#!topic/golang-nuts/s7Xk1q0LSU0)
 
 Install
 -------
@@ -16,6 +25,28 @@ Clone this repository, build it and run it.
     ./g0bin
 
 To run g0bin on a different port, modify the Port setting in config.json.
+
+The configuration of g0bin can also be reloaded by sending a HUP signal to the process.
+
+    kill -HUP [PROCESS ID]
+
+Other
+-----
+
+This fork cleans things up to make them more generic and has the following changes:
+
+ * Remove extra header links.
+ * Remove extra link options.
+ * Remove extra layout details.
+ * Set Burn after reading as default option.
+
+Here are some items which are in the Python implemention which have not been implemented.
+
+ * Paste counter - Display a tiny counter for pastes created
+ * Names/links to insert in the menu bar
+ * Handling of Max Size
+ * Paste ID length
+ * Clone paste
 
 Copyright (c) 2013 Julian Yap
 
