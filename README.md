@@ -33,7 +33,7 @@ The configuration of g0bin can also be reloaded by sending a HUP signal to the p
 Other
 -----
 
-This fork cleans things up to make them more generic and has the following changes:
+This project modifies the Python implementation and cleans things up to make them more generic.  It has the following changes:
 
  * Remove extra header links.
  * Remove extra link options.
