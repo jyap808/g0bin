@@ -3,9 +3,9 @@ g0bin
 
 g0bin is a client side encrypted pastebin.  The server has zero knowledge of pasted data.  Data is encrypted/decrypted in the browser using 256 bits AES.
 
-Demo: http://g0bin-demo.appspot.com/ (modified to run on Google App Engine using the Datastore API)
+**DEMO: http://g0bin-demo.appspot.com**
 
-g0bin is a Go port of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).  [These diagrams](http://sebsauvage.net/wiki/doku.php?id=php:zerobin#how_does_it_work) best describe how the encryption and decryption process works.
+g0bin is a Go port of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).
 
 This project was created mostly as a Go learning exercise through converting a project I use often.  It also serves as a great sample project in Go since it only uses the standard library.
 
@@ -15,6 +15,30 @@ Here are some elements that are have been implemented.
  * [Using Anonymous Structs to pass data to HTML Templates](http://julianyap.com/2013/09/23/using-anonymous-structs-to-pass-data-to-templates-in-golang.html)
  * [Hot configuration reload from a JSON configuration file](http://openmymind.net/Golang-Hot-Configuration-Reload/)
  * [HTTP server logging](https://groups.google.com/forum/#!topic/golang-nuts/s7Xk1q0LSU0)
+
+NOTE: The demo was modified to run on Google App Engine using the Datastore API.
+
+How it works
+------------
+
+When pasting a text into g0bin:
+
+![Encryption image](http://julianyap.com/g0bin/images/encryption.png)
+
+ * You paste your text in the browser and click the “Submit” button.
+ * A random 256 bits key is generated in the browser.
+ * Data is compressed and encrypted with AES using Javascript libraries.
+ * Encrypted data is sent to the server and stored.
+ * The browser displays the final URL with the key.
+ * The key is never transmitted to the server, which therefore cannot decrypt data.
+
+When opening a g0bin URL:
+
+![Decryption image](http://julianyap.com/g0bin/images/decryption.png)
+
+ * The browser requests encrypted data from the server
+ * The decryption key is in the anchor part of the URL (#…) **which is never sent to the server**.
+ * Data is decrypted in the browser using the key and displayed.
 
 Install
 -------
