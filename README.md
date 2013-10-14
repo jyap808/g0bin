@@ -1,11 +1,11 @@
-g0bin
+G0Bin
 =====
 
-g0bin is a client side encrypted pastebin.  The server has zero knowledge of pasted data.  Data is encrypted/decrypted in the browser using 256 bits AES.
+G0Bin is a client side encrypted pastebin.  The server has zero knowledge of pasted data.  Data is encrypted/decrypted in the browser using 256 bits AES.
 
 **DEMO: http://g0bin-demo.appspot.com**
 
-g0bin is a Go port of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).
+G0Bin is a Go port of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).
 
 This project was created mostly as a Go learning exercise through converting a project I use often.  It also serves as a great sample project in Go since it only uses the standard library.
 
@@ -21,7 +21,7 @@ NOTE: The demo was modified to run on Google App Engine using the Datastore API.
 How it works
 ------------
 
-When pasting a text into g0bin:
+When pasting a text into G0Bin:
 
 ![Encryption image](http://julianyap.com/g0bin/images/encryption.png)
 
@@ -32,7 +32,7 @@ When pasting a text into g0bin:
  * The browser displays the final URL with the key.
  * The key is never transmitted to the server, which therefore cannot decrypt data.
 
-When opening a g0bin URL:
+When opening a G0Bin URL:
 
 ![Decryption image](http://julianyap.com/g0bin/images/decryption.png)
 
@@ -50,9 +50,9 @@ Clone this repository, build it and run it.
     go build
     ./g0bin
 
-To run g0bin on a different port, modify the Port setting in config.json.
+To run G0Bin on a different port, modify the Port setting in config.json.
 
-The configuration of g0bin can also be reloaded by sending a HUP signal to the process.
+The configuration of G0Bin can also be reloaded by sending a HUP signal to the process.
 
     kill -HUP [PROCESS ID]
 
