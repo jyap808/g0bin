@@ -70,11 +70,10 @@ Here are some items which are in the Python implemention which have not been imp
 
  * Paste counter - Display a tiny counter for pastes created
  * Names/links to insert in the menu bar
- * Handling of Max Size
  * Paste ID length
  * Clone paste
 
-Copyright (c) 2013 Julian Yap
+Copyright (c) 2016 Julian Yap
 
 [MIT License](https://github.com/jyap808/g0bin/blob/master/LICENSE)
 
