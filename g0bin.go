@@ -34,6 +34,7 @@ type Config struct {
 	Host                  string
 	Port                  int
 	MaxSize               int
+	FileUploadEnabled     bool
 }
 
 var (

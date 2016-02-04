@@ -1,8 +1,10 @@
 {{define "content"}}
-<p class="file-upload">
-	<input type="button" class="btn btn-upload"  value="Upload File">
-	<input type="file" class="hide-upload" id="file-upload" >
-</p>
+{{if .Settings.FileUploadEnabled}}
+	<p class="file-upload">
+		<input type="button" class="btn btn-upload"  value="Upload File">
+		<input type="file" class="hide-upload" id="file-upload" >
+	</p>
+{{end}}
 
 <form class="well" method="post" action="/paste/create">
   <p class="paste-option">
