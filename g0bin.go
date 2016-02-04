@@ -229,15 +229,23 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 	uuid = strings.TrimSuffix(uuid, "=")
 	uuid = strings.Replace(uuid, "/", "-", -1)
 
-	// Save paste
-	p := &Paste{Expiration: expiration, Content: []byte(content), UUID: uuid}
-	p.save()
+	// Check paste content size
+	if len(content) / 2 > config.MaxSize {
+		w.Header().Set("Content-Type", "application/json")
+		mapD := map[string]string{"status": "error", "message": "Content too big"}
+		mapB, _ := json.Marshal(mapD)
+		fmt.Fprintf(w, string(mapB))
+	} else {
+		// Save paste
+		p := &Paste{Expiration: expiration, Content: []byte(content), UUID: uuid}
+		p.save()
 
-	// Response
-	w.Header().Set("Content-Type", "application/json")
-	mapD := map[string]string{"status": "ok", "paste": uuid}
-	mapB, _ := json.Marshal(mapD)
-	fmt.Fprintf(w, string(mapB))
+		// Response
+		w.Header().Set("Content-Type", "application/json")
+		mapD := map[string]string{"status": "ok", "paste": uuid}
+		mapB, _ := json.Marshal(mapD)
+		fmt.Fprintf(w, string(mapB))
+	}
 }
 
 func (p *Paste) save() error {
