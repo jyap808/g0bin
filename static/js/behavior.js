@@ -796,8 +796,8 @@
     $('.btn-clone').click(function (e) {
       e.preventDefault();
       $('.submit-form').show();
-      $('.paste-form').hide();
       $('#content').val(zerobin.getPasteContent()).trigger('change');
+      $('.paste-form').hide();
     });
 
     $('.clone .btn-danger').click(function (e) {

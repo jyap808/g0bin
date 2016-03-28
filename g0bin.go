@@ -231,7 +231,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 	uuid = strings.Replace(uuid, "/", "-", -1)
 
 	// Check paste content size
-	if len(content) / 2 > config.MaxSize {
+	if len(content)/2 > config.MaxSize {
 		w.Header().Set("Content-Type", "application/json")
 		mapD := map[string]string{"status": "error", "message": "Content too big"}
 		mapB, _ := json.Marshal(mapD)
@@ -239,11 +239,16 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// Save paste
 		p := &Paste{Expiration: expiration, Content: []byte(content), UUID: uuid}
-		p.save()
-
-		// Response
+		err := p.save()
+		var mapD map[string]string
 		w.Header().Set("Content-Type", "application/json")
-		mapD := map[string]string{"status": "ok", "paste": uuid}
+		if err != nil {
+			log.Printf("could not save paste: %v", err)
+			mapD = map[string]string{"status": "error", "message": "Could not save"}
+		} else {
+			// Response
+			mapD = map[string]string{"status": "ok", "paste": uuid}
+		}
 		mapB, _ := json.Marshal(mapD)
 		fmt.Fprintf(w, string(mapB))
 	}
@@ -313,7 +318,7 @@ func main() {
 	log.Printf("Serving from http://%s:%d\n", config.Host, config.Port)
 	err := http.ListenAndServe(config.Host+":"+strconv.Itoa(config.Port), Log(http.DefaultServeMux))
 	if err != nil {
-		log.Printf("ListenAndServe: ", err)
+		log.Printf("ListenAndServe: %v", err)
 	}
 
 }
