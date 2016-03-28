@@ -313,7 +313,7 @@ func main() {
 	log.Printf("Serving from http://%s:%d\n", config.Host, config.Port)
 	err := http.ListenAndServe(config.Host+":"+strconv.Itoa(config.Port), Log(http.DefaultServeMux))
 	if err != nil {
-		log.Printf("ListenAndServe: ", err)
+		log.Printf("ListenAndServe: %v", err)
 	}
 
 }
