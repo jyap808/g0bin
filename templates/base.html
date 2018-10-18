@@ -23,9 +23,9 @@
 {{if .Settings.CompressedStaticFiles}}
     <script type="text/javascript" src="/assets/js/app.js?{{ .Settings.Version }}"></script>
 {{else}}
-    <script type="text/javascript" src="/static/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/static/js/sjcl.js"></script>
-    <script type="text/javascript" src="/static/js/behavior.js?{{ .Settings.Version }}"></script>
+    <script type="text/javascript" src="/static/js/app/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/static/js/app/sjcl.js"></script>
+    <script type="text/javascript" src="/static/js/app/behavior.js?{{ .Settings.Version }}"></script>
 {{end}}
 
     <script type="text/javascript">
@@ -129,11 +129,11 @@
 {{if .Settings.CompressedStaticFiles}}
   <script type="text/javascript" src="/assets/js/libs.js?{{ .Settings.Version }}"></script>
 {{else}}
-  <script type="text/javascript" src="/static/js/jquery.elastic.source.js"></script>
-  <script type="text/javascript" src="/static/js/lzw.js"></script>
-  <script type="text/javascript" src="/static/js/prettify.min.js"></script>
-  <script type="text/javascript" src="/static/js/clipboard.min.js"></script>
-  <script type="text/javascript" src="/static/js/vizhash.min.js"></script>
+  <script type="text/javascript" src="/static/js/libs/jquery.elastic.source.js"></script>
+  <script type="text/javascript" src="/static/js/libs/lzw.js"></script>
+  <script type="text/javascript" src="/static/js/libs/prettify.min.js"></script>
+  <script type="text/javascript" src="/static/js/libs/clipboard.min.js"></script>
+  <script type="text/javascript" src="/static/js/libs/vizhash.min.js"></script>
 {{end}}
 
   </body>

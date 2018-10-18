@@ -206,16 +206,14 @@
     /** Get a tinyurl using JSONP */
     getTinyURL: function(longURL, success) {
         $.ajax({
-  		  url: 'https://www.googleapis.com/urlshortener/v1/url',
-  		  type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "longUrl": longURL
-  		  }),
-  		  processData: false,
-  		  dataType: 'json'
+  		  url: 'https://url.itunix.eu/shorten',
+        type: 'POST',
+        data: { 
+          "long_url": longURL,
+          "apikey": "pastebin-3a0fbd8852f073fe5b2b02c7633a5fae"
+        },
   	  }).done(function(data){
-  		  success(data.id);
+  		  success(data);
         });
     },
 
@@ -673,11 +671,11 @@
             e.preventDefault();
             $('#short-url').text('Loading short url...');
             zerobin.getTinyURL(window.location.toString(), function (tinyurl) {
-              clip.setText(tinyurl);
+              //clip.setText(tinyurl);
               $('#copy-success').hide();
               zerobin.message('success',
                 '<a href="' + tinyurl + '">' + tinyurl + '</a>',
-                'Short url', true, reposition);
+                'Short url', true);
               $('#short-url').text('Get short url');
             });
           });
@@ -686,7 +684,7 @@
            flash reposition */
           $(".close").die().live('click', function (e) {
             e.preventDefault();
-            $(this).parent().fadeOut(reposition);
+            $(this).parent().fadeOut();
           });
 
           /** Syntaxic coloration */
