@@ -589,24 +589,22 @@
 */
     var content = $('#paste-content').text().trim();
     var key = zerobin.getPasteKey();
-    var error = false;
 
     if (content && key) {
 
       /* Load the lib for visual canvas, create one from the paste id and
      insert it */
-      $.getScript("/static/js/vizhash.min.js").done(function (script, textStatus) {
-        if (vizhash.supportCanvas) {
-          var vhash = vizhash.canvasHash(zerobin.getPasteId(), 24, 24);
-          $('<a class="vhash" href="#"></a>').click(function (e) {
-            e.preventDefault();
-            if (confirm("This picture is unique to your paste so you can identify" +
-              " it quickly. \n\n Do you want to know more about this?")) {
-              window.open("http://is.gd/IJaMRG", "_blank");
-            }
-          }).prependTo('.lnk-option').append(vhash.canvas);
-        }
-      });
+      if (vizhash.supportCanvas) {
+        var vhash = vizhash.canvasHash(zerobin.getPasteId(), 24, 24);
+        $('<a class="vhash" href="#"></a>').click(function (e) {
+          e.preventDefault();
+          if (confirm("This picture is unique to your paste so you can identify" +
+            " it quickly. \n\n Do you want to know more about this?")) {
+            window.open("http://is.gd/IJaMRG", "_blank");
+          }
+        }).prependTo('.lnk-option').append(vhash.canvas);
+      }
+
 
       var $form = $('input, textarea, select, button').prop('disabled', true);
 
