@@ -1,6 +1,6 @@
 {
     "Version" : "0.4",
-    "CompressedStaticFiles": false,
+    "CompressedStaticFiles": true,
     "Host": "127.0.0.1",
     "Port": 8036,
     "MaxSize" : 512000,

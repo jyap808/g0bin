@@ -4,19 +4,15 @@
     <meta charset="utf-8">
     <title>G0Bin - encrypted pastebin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-          content="G0Bin is a client-side-encrypted
-                   pastebin featuring burn after reading, an history and
-                   a clipboard">
-
+    <meta name="description" content="g0bin is a client-side-encrypted pastebin featuring burn after reading, an history and a clipboard">
     <link rel="shortcut icon" href="/favicon.ico">
 
 {{if .Settings.CompressedStaticFiles}}
-    <link href="/static/css/style.min.css?{{ .Settings.Version }}" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/app.css?{{ .Settings.Version }}" />
 {{else}}
-    <link href="/static/css/prettify.css" rel="stylesheet" />
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/css/style.css?{{ .Settings.Version }}" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/prettify.css"  />
+    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" href="/static/css/style.css?{{ .Settings.Version }}" />
 {{end}}
 
     <!-- Le HTML5 shim, for IE7-8 support of HTML5 elements -->
@@ -25,11 +21,11 @@
     <![endif]-->
 
 {{if .Settings.CompressedStaticFiles}}
-    <script src="/static/js/main.min.js?{{ .Settings.Version }}"></script>
+    <script type="text/javascript" src="/assets/js/app.js?{{ .Settings.Version }}"></script>
 {{else}}
-    <script src="/static/js/jquery-1.7.2.min.js"></script>
-    <script src="/static/js/sjcl.js"></script>
-    <script src="/static/js/behavior.js?{{ .Settings.Version }}"></script>
+    <script type="text/javascript" src="/static/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/static/js/sjcl.js"></script>
+    <script type="text/javascript" src="/static/js/behavior.js?{{ .Settings.Version }}"></script>
 {{end}}
 
     <script type="text/javascript">
@@ -122,14 +118,6 @@
        </p>
       </footer>
 
-{{if .Settings.CompressedStaticFiles}}
-      <script src="/static/js/main.min.js?{{ .Settings.Version }}"></script>
-{{else}}
-      <script src="/static/js/jquery.elastic.source.js"></script>
-      <script src="/static/js/lzw.js"></script>
-      <script src="/static/js/prettify.min.js"></script>
-      <script src="/static/js/clipboard.min.js"></script>
-{{end}}
 
     <p id="alert-template">
       <a class="close" data-dismiss="alert" href="#">×</a>
@@ -137,6 +125,16 @@
       <span class="message"></span>
     </p>
   </div><!--/wrap-content-->
+
+{{if .Settings.CompressedStaticFiles}}
+  <script type="text/javascript" src="/assets/js/libs.js?{{ .Settings.Version }}"></script>
+{{else}}
+  <script type="text/javascript" src="/static/js/jquery.elastic.source.js"></script>
+  <script type="text/javascript" src="/static/js/lzw.js"></script>
+  <script type="text/javascript" src="/static/js/prettify.min.js"></script>
+  <script type="text/javascript" src="/static/js/clipboard.min.js"></script>
+  <script type="text/javascript" src="/static/js/vizhash.min.js"></script>
+{{end}}
 
   </body>
 

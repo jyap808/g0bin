@@ -334,6 +334,7 @@ func main() {
 	http.HandleFunc("/paste/", pasteHandler)
 	http.Handle("/captcha/", captcha.Server(captcha.StdWidth, captcha.StdHeight))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 	log.Printf("Serving from http://%s:%d\n", config.Host, config.Port)
 	err := http.ListenAndServe(config.Host+":"+strconv.Itoa(config.Port), Log(http.DefaultServeMux))
 	if err != nil {

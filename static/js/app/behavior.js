@@ -747,8 +747,6 @@
 
       if (pastes.length) {
 
-        $.getScript("/static/js/vizhash.min.js").done(function (script, textStatus) {
-
           $container.find('.item').remove();
           $.each(zerobin.getPreviousPastes(), function (i, paste) {
 
@@ -774,8 +772,6 @@
             }
 
           });
-
-        });
 
       }
 
