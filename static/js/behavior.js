@@ -658,28 +658,14 @@
         /* Add a continuation to let the UI redraw */
         setTimeout(function () {
 
-          /* Setup flash clipboard button */
-          ZeroClipboard.setMoviePath('/static/js/ZeroClipboard.swf');
-
-          var clip = new ZeroClipboard.Client();
-
-          // Callback to reposition the clibpboad flash animation overlay
-          var reposition = function () {
-            clip.reposition();
-          };
-
-          clip.addEventListener('mouseup', function () {
-            $('#clip-button').text('Copying paste...');
-            clip.setText(zerobin.getPasteContent());
+          var clipboard = new ClipboardJS('.copy-btn', {
+            text: function() {
+                return zerobin.getPasteContent();
+            }
           });
-          clip.addEventListener('complete', function () {
-            $('#clip-button').text('Copy to clipboard');
-            zerobin.message('info', 'The paste is now in your clipboard', '',
-            true, reposition);
+          clipboard.on('success', function() {
+            zerobin.message('info', 'The paste is now in your clipboard');
           });
-          clip.glue('clip-button');
-
-          window.onresize = reposition;
 
 
           /* Setup link to get the paste short url*/
