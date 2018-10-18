@@ -1,8 +1,10 @@
 {
-    "Version" : "0.3",
+    "Version" : "0.4",
     "CompressedStaticFiles": false,
     "Host": "127.0.0.1",
-    "Port": 8081,
+    "Port": 8036,
     "MaxSize" : 512000,
-    "FileUploadEnabled": true
+    "FileUploadEnabled": false,
+    "Debug": false,
+    "EnableCaptcha": true
 }

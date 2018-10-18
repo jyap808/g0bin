@@ -6,24 +6,89 @@
 	</p>
 {{end}}
 
-<form class="well" method="post" action="/paste/create">
+<form class="well" method="POST" action="/paste/create">
   <p class="paste-option">
   <label for="expiration" >Expiration:</label>
     <select id="expiration" name="expiration">
-      <option selected value="burn_after_reading">Burn after reading</option>
-      <option value="1_day">1 day</option>
+      <option value="burn_after_reading">Burn after reading</option>
+      <option selected value="1_day">1 day</option>
       <option value="1_month">1 month</option>
       <option value="never">Never</option>
     </select>
-    <button type="submit" class="btn btn-primary">Submit</button>
   </p>
+
   <p>
-      <div class="progress progress-striped active">
-        <div class="bar"></div>
-      </div>
-      <textarea rows="10"  style="width:100%;"
-                class="input-xlarge"
-                id="content" name="content"></textarea>
+    <div class="progress progress-striped active">
+      <div class="bar"></div>
+    </div>
+    <textarea rows="10"  style="width:100%;" class="input-xlarge" id="content" name="content"></textarea>
   </p>
+
+
+  {{if .Settings.EnableCaptcha}}
+
+  <div class="row">
+
+    <div class="span6">
+        <p><img id=image src="/captcha/{{.CaptchaId}}.png" alt="Captcha image"></p>
+        <a href="#" onclick="reload()">Reload</a> | <a href="#" onclick="playAudio()">Play Audio</a>
+        <audio id=audio controls style="display:none" src="/captcha/{{.CaptchaId}}.wav" preload=none>
+          You browser doesn't support audio.
+          <a href="/captcha/download/{{.CaptchaId}}.wav">Download file</a> to play it in the external player.
+        </audio>
+        <select id="lang" onchange="changeLang()">
+            <option value="en">English</option>
+            <option value="ja">Japanese</option>
+            <option value="ru">Russian</option>
+            <option value="zh">Chinese</option>
+          </select>
+    </div>
+
+    <div class="span6">
+      Enter the code from the image here:
+      <input type=hidden id="captchaId" name=captchaId value="{{.CaptchaId}}"><br>
+      <input id="captchaSolution" name=captchaSolution>
+    </div>
+
+  </div>
+
+  {{end}}
+  
+  <input type="submit" name="button" class="btn-primary btn-large" value="Submit">
 </form>
+
+
+{{if .Settings.EnableCaptcha}}
+<script>
+  function setSrcQuery(e, q) {
+    var src  = e.src;
+    var p = src.indexOf('?');
+    if (p >= 0) {
+      src = src.substr(0, p);
+    }
+    e.src = src + "?" + q
+  }
+  function playAudio() {
+    var le = document.getElementById("lang");
+    var lang = le.options[le.selectedIndex].value;
+    var e = document.getElementById('audio')
+    setSrcQuery(e, "lang=" + lang)
+    e.style.display = 'block';
+    e.autoplay = 'true';
+    return false;
+  }
+  function changeLang() {
+    var e = document.getElementById('audio')
+    if (e.style.display == 'block') {
+      playAudio();
+    }
+  }
+  function reload() {
+    setSrcQuery(document.getElementById('image'), "reload=" + (new Date()).getTime());
+    setSrcQuery(document.getElementById('audio'), (new Date()).getTime());
+    return false;
+  }
+  </script>
+  {{end}}
+  
 {{end}}

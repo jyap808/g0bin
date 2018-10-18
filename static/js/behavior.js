@@ -515,6 +515,8 @@
 
           var expiration = $('#expiration').val();
           var key = zerobin.makeKey(256);
+          var captchaId = $('#captchaId').val();
+          var captchaSolution = $('#captchaSolution').val();
 
           zerobin.encrypt(key, paste,
 
@@ -528,7 +530,9 @@
             bar.set('Sending...', '95%');
             var data = {
               content: content,
-              expiration: expiration
+              expiration: expiration,
+              captchaId: captchaId,
+              captchaSolution: captchaSolution
             };
             var sizebytes = zerobin.count(JSON.stringify(data));
             var oversized = sizebytes > zerobin.max_size; // 100kb - the others header information
@@ -550,7 +554,7 @@
               bar.container.hide();
               zerobin.message(
                 'error',
-                'Paste could not be saved. Please try again later.',
+                'Paste could not be saved. Please try again later or give a valid captcha.',
                 'Error');
 
             })

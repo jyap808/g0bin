@@ -17,6 +17,8 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/dchest/captcha"
 )
 
 type Paste struct {
@@ -35,6 +37,8 @@ type Config struct {
 	Port                  int
 	MaxSize               int
 	FileUploadEnabled     bool
+	Debug                 bool
+	EnableCaptcha         bool
 }
 
 var (
@@ -84,9 +88,11 @@ func loadConfig(fail bool) {
 
 func newHandler(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Settings *Config
+		Settings  *Config
+		CaptchaId string
 	}{
 		config,
+		captcha.New(),
 	}
 	t := template.Must(template.ParseFiles("templates/base.html", "templates/new.html"))
 	t.Execute(w, data)
@@ -102,37 +108,37 @@ func abs(x int64) int64 {
 	return x
 }
 
-func humanizedExpiration(since int64, t time.Time) string {
-	abs_since := abs(since)
-	if abs_since < 60 {
-		return fmt.Sprintf("in %d s", abs_since)
+func expirationHumanized(since int64, t time.Time) string {
+	absSince := abs(since)
+	if absSince < 60 {
+		return fmt.Sprintf("in %d s", absSince)
 	}
 
-	if abs_since < 60*60 {
-		mins_since := abs_since / 60
-		return fmt.Sprintf("in %d m", mins_since)
+	if absSince < 60*60 {
+		minsSince := absSince / 60
+		return fmt.Sprintf("in %d m", minsSince)
 	}
 
-	if abs_since < 60*60*24 {
-		hours_since := abs_since / (60 * 60)
-		return fmt.Sprintf("in %d h", hours_since)
+	if absSince < 60*60*24 {
+		hoursSince := absSince / (60 * 60)
+		return fmt.Sprintf("in %d h", hoursSince)
 	}
 
-	if abs_since < 60*60*24*10 {
-		days_since := abs_since / (60 * 60 * 24)
-		return fmt.Sprintf("in %d day(s)", days_since)
+	if absSince < 60*60*24*10 {
+		daysSince := absSince / (60 * 60 * 24)
+		return fmt.Sprintf("in %d day(s)", daysSince)
 	}
 
 	return fmt.Sprintf("on %s %d, %d", t.Month(), t.Day(), t.Year())
 }
 
 func pasteHandler(w http.ResponseWriter, r *http.Request) {
-	paste_id := strings.TrimPrefix(r.URL.Path, "/paste/")
-	keep_alive := false
-	burn_after_reading := false
-	humanized_expiration := ""
+	pasteID := strings.TrimPrefix(r.URL.Path, "/paste/")
+	keepAlive := false
+	burnAfterReading := false
+	humanizedExpiration := ""
 
-	if !uuidValidator.MatchString(paste_id) {
+	if !uuidValidator.MatchString(pasteID) {
 		log.Print("Invalue paste ID error")
 		w.WriteHeader(http.StatusNotFound)
 		data := struct {
@@ -145,7 +151,7 @@ func pasteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	paste := &Paste{UUID: paste_id}
+	paste := &Paste{UUID: pasteID}
 	err := paste.load()
 	if err != nil {
 		log.Print("Load file error")
@@ -160,26 +166,26 @@ func pasteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if strings.HasPrefix(paste.Expiration, "burn_after_reading") {
-		// burn_after_reading contains the paste creation date
+	if strings.HasPrefix(paste.Expiration, "burnAfterReading") {
+		// burnAfterReading contains the paste creation date
 		// if this read appends 10 seconds after the creation date
 		// we don't delete the paste because it means it's the redirection
 		// to the paste that happens during the paste creation
-		burn_after_reading = true
-		keep_alive = true
-		keep_alive_timestamp := strings.TrimPrefix(paste.Expiration, "burn_after_reading#")
-		t, _ := time.Parse(time.RFC3339Nano, keep_alive_timestamp)
+		burnAfterReading = true
+		keepAlive = true
+		keepAliveTimestamp := strings.TrimPrefix(paste.Expiration, "burnAfterReading#")
+		t, _ := time.Parse(time.RFC3339Nano, keepAliveTimestamp)
 		since := int64(time.Since(t) / time.Second)
 		if since > 10 {
-			keep_alive = false
+			keepAlive = false
 			paste.delete()
 		}
 	} else {
-		keep_alive = true
+		keepAlive = true
 		t, _ := time.Parse(time.RFC3339Nano, paste.Expiration)
 		since := int64(time.Since(t) / time.Second)
 		if since > 0 {
-			keep_alive = false
+			keepAlive = false
 			paste.delete()
 			log.Print("Expiration error")
 			w.WriteHeader(http.StatusNotFound)
@@ -192,7 +198,7 @@ func pasteHandler(w http.ResponseWriter, r *http.Request) {
 			t.Execute(w, data)
 			return
 		} else {
-			humanized_expiration = humanizedExpiration(since, t)
+			humanizedExpiration = expirationHumanized(since, t)
 		}
 	}
 
@@ -205,9 +211,9 @@ func pasteHandler(w http.ResponseWriter, r *http.Request) {
 	}{
 		config,
 		paste,
-		keep_alive,
-		burn_after_reading,
-		humanized_expiration,
+		keepAlive,
+		burnAfterReading,
+		humanizedExpiration,
 	}
 	t := template.Must(template.ParseFiles("templates/base.html", "templates/paste.html"))
 	t.Execute(w, data)
@@ -220,8 +226,17 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/new/", 302)
 		return
 	}
+
 	expiration := r.FormValue("expiration")
 	content := r.FormValue("content")
+
+	if config.EnableCaptcha {
+		if !captcha.VerifyString(r.FormValue("captchaId"), r.FormValue("captchaSolution")) {
+			log.Print("Recaptcha error. Redirecting")
+			http.Redirect(w, r, "/new/", 422)
+			return
+		}
+	}
 
 	// Create UUID from content
 	h := sha1.New()
@@ -252,14 +267,15 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 		mapB, _ := json.Marshal(mapD)
 		fmt.Fprintf(w, string(mapB))
 	}
+
 }
 
 func (p *Paste) save() error {
 	filename := p.UUID + ".txt"
 	expiration := ""
 	t := time.Now()
-	if p.Expiration == "burn_after_reading" {
-		expiration = fmt.Sprintf("burn_after_reading#%s", t.Format(time.RFC3339Nano))
+	if p.Expiration == "burnAfterReading" {
+		expiration = fmt.Sprintf("burnAfterReading#%s", t.Format(time.RFC3339Nano))
 	} else {
 		if p.Expiration == "1_day" {
 			expiration = time.Now().Add(24 * time.Hour).Format(time.RFC3339Nano)
@@ -304,7 +320,9 @@ func indexRedirect(w http.ResponseWriter, r *http.Request) {
 
 func Log(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
+		if config.Debug {
+			log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
+		}
 		handler.ServeHTTP(w, r)
 	})
 }
@@ -314,6 +332,7 @@ func main() {
 	http.HandleFunc("/new/", newHandler)
 	http.HandleFunc("/paste/create", createHandler)
 	http.HandleFunc("/paste/", pasteHandler)
+	http.Handle("/captcha/", captcha.Server(captcha.StdWidth, captcha.StdHeight))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	log.Printf("Serving from http://%s:%d\n", config.Host, config.Port)
 	err := http.ListenAndServe(config.Host+":"+strconv.Itoa(config.Port), Log(http.DefaultServeMux))

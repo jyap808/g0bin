@@ -20,6 +20,9 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+g0bin
+pastes/*
+templates/pastes/*
 
 # Random stuff
 \#*
