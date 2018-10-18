@@ -31,7 +31,7 @@ gulp.task('optimize-libs-js', function() {
 gulp.task('optimize-css', function() {
 			return gulp.src('static/css/*.css')
 		.pipe(concat('app.css'))
-		.pipe(minifycss({root: 'static/css', keepSpecialComments: 0}))
+		.pipe(minifycss({keepSpecialComments: 0}))
 		.pipe(gulp.dest('assets/css'))
 });
 
