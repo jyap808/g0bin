@@ -753,7 +753,7 @@
 
             if (vizhash.supportCanvas) {
               var pasteId = zerobin.getPasteId(paste.link);
-              var vhash = vizhash.canvasHash(pasteId, 24, 24).canvas;
+              var vhash = vizhash.canvasHash(pasteId, 20, 20).canvas;
               $link.prepend($(vhash).addClass('vhash'));
             }
 
