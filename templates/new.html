@@ -7,54 +7,75 @@
 {{end}}
 
 <form class="well" method="POST" action="/paste/create">
-  <p class="paste-option">
-  <label for="expiration" >Expiration:</label>
-    <select id="expiration" name="expiration">
-      <option value="burn_after_reading">Burn after reading</option>
-      <option selected value="1_day">1 day</option>
-      <option value="1_month">1 month</option>
-      <option value="never">Never</option>
-    </select>
-  </p>
+
 
   <p>
     <div class="progress progress-striped active">
       <div class="bar"></div>
     </div>
-    <textarea rows="10"  style="width:100%;" class="input-xlarge" id="content" name="content"></textarea>
+    <textarea rows="10"  style="width:100%;" placeholder="place for your wonderful piece of code" class="input-xlarge" id="content" name="content"></textarea>
   </p>
-
 
   {{if .Settings.EnableCaptcha}}
 
-  <div class="row">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="row-fluid">
 
-    <div class="span6">
-        <p><img id=image src="/captcha/{{.CaptchaId}}.png" alt="Captcha image"></p>
-        <a href="#" onclick="reload()">Reload</a> | <a href="#" onclick="playAudio()">Play Audio</a>
-        <audio id=audio controls style="display:none" src="/captcha/{{.CaptchaId}}.wav" preload=none>
-          You browser doesn't support audio.
-          <a href="/captcha/download/{{.CaptchaId}}.wav">Download file</a> to play it in the external player.
-        </audio>
-        <select id="lang" onchange="changeLang()">
-            <option value="en">English</option>
-            <option value="ja">Japanese</option>
-            <option value="ru">Russian</option>
-            <option value="zh">Chinese</option>
-          </select>
+          <div class="span6">
+
+  {{end}}
+
+              <div>
+                  <div class="form_left">
+                      Expiration:
+                  </div>
+                  <div class="form_right">
+                      <select id="expiration" name="expiration">
+                          <option value="burnAfterReading">Burn after reading</option>
+                          <option selected value="1_day">1 day</option>
+                          <option value="1_month">1 month</option>
+                          <option value="never">Never</option>
+                      </select>
+                  </div>
+              </div>
+
+  {{if .Settings.EnableCaptcha}}
+
+                <div>
+                    <div class="form_left">
+                        Captcha:
+                    </div>
+                    <div class="form_right">
+                        <input id="captchaSolution" style="width: 100px;" name=captchaSolution>
+                        <input type=hidden id="captchaId" name=captchaId value="{{.CaptchaId}}">
+                    </div>
+                </div>
+
+          </div>
+
+            <div class="span6">
+              <p><img id=image src="/captcha/{{.CaptchaId}}.png" alt="Captcha image"></p>
+              <a href="#" onclick="reload()">Reload</a> | <a href="#" onclick="playAudio()">Play Audio</a>
+              <audio id=audio controls style="display:none" src="/captcha/{{.CaptchaId}}.wav" preload=none>
+                You browser doesn't support audio.
+                <a href="/captcha/download/{{.CaptchaId}}.wav">Download file</a> to play it in the external player.
+              </audio>
+              <select id="lang" onchange="changeLang()">
+                  <option value="en">English</option>
+                  <option value="ja">Japanese</option>
+                  <option value="ru">Russian</option>
+                  <option value="zh">Chinese</option>
+                </select>
+            </div>
+
+      </div>
     </div>
-
-    <div class="span6">
-      Enter the code from the image here:
-      <input type=hidden id="captchaId" name=captchaId value="{{.CaptchaId}}"><br>
-      <input id="captchaSolution" name=captchaSolution>
-    </div>
-
   </div>
 
   {{end}}
-  
-  <input type="submit" name="button" class="btn-primary btn-large" value="Submit">
+
+  <button type="submit" name="button" class="btn-primary btn-large"> <i class="icon-plus icon-white"></i> Create New Paste </button>   
 </form>
 
 

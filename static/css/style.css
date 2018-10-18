@@ -388,3 +388,18 @@ canvas {
 #content.hover {
 	background-color: #eee;
 }
+
+.form_left {
+	float: left;
+	line-height: 25px;
+	width: 100px;
+	margin: 0 0 10px;
+}
+
+.form_right {
+  float: left;
+  line-height: 25px;
+  min-width: 200px;
+  text-align: left;
+  margin: 0 0 10px;
+}
