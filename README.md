@@ -1,9 +1,9 @@
-G0Bin
+g0bin
 =====
 
 G0Bin is a client side encrypted pastebin.  The server has zero knowledge of pasted data.  Data is encrypted/decrypted in the browser using 256 bits AES.
 
-**DEMO: http://g0bin-demo.appspot.com**
+**DEMO: https://paste.itunix.eu/new/**
 
 G0Bin is a Go port of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).
 
@@ -32,7 +32,7 @@ When pasting a text into G0Bin:
  * The browser displays the final URL with the key.
  * The key is never transmitted to the server, which therefore cannot decrypt data.
 
-When opening a G0Bin URL:
+When opening a g0bin URL:
 
 ![Decryption image](http://julianyap.com/g0bin/images/decryption.png)
 
@@ -64,7 +64,6 @@ This project modifies the Python implementation and cleans things up to make the
  * Remove extra header links.
  * Remove extra link options.
  * Remove extra layout details.
- * Set Burn after reading as default option.
 
 Here are some items which are in the Python implemention which have not been implemented.
 
