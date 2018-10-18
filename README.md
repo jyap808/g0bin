@@ -3,7 +3,7 @@ g0bin
 
 G0Bin is a client side encrypted pastebin.  The server has zero knowledge of pasted data.  Data is encrypted/decrypted in the browser using 256 bits AES.
 
-**DEMO: https://paste.itunix.eu/new/**
+**DEMO: https://paste.itunix.eu/**
 
 G0Bin is a Go port of [0bin](https://github.com/sametmax/0bin/) (written in Python).  0bin in turn is an implementation of the [ZeroBin](https://github.com/sebsauvage/ZeroBin/) project (written in PHP).
 
@@ -45,7 +45,8 @@ Install
 
 Clone this repository, build it and run it.
 
-    git clone https://github.com/jyap808/g0bin.git
+    go get github.com/dchest/captcha
+    git clone https://github.com/modInfo/g0bin
     cd g0bin
     go build
     ./g0bin
