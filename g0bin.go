@@ -55,12 +55,6 @@ func init() {
 	}()
 }
 
-func GetConfig() *Config {
-	configLock.RLock()
-	defer configLock.RUnlock()
-	return config
-}
-
 func loadConfig(fail bool) {
 	file, err := ioutil.ReadFile("config.json")
 	if err != nil {
